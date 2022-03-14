@@ -1,0 +1,18 @@
+name: PR AutoLabeler
+
+on:
+  pull_request_target:
+
+jobs:
+  label:
+    name: Labeler
+    timeout-minutes: 5
+    runs-on: ubuntu-20.04
+    steps:
+      - name: pr autolabeler
+        #uses: actions/labeler@v2.1.1 # any/all glob patterns only available in @master at this time, not in v2.1.1 yet!
+        # the existing documentation is wrong -_-
+        uses: actions/labeler@master
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labeler.yml

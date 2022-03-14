@@ -1,0 +1,28 @@
+name: 'action-template'
+description: 'description'
+inputs:
+  input:
+    description: 'description'
+    required: false
+    default: ''
+outputs:
+  result:
+    description: "results"
+    value: "${{ steps.action.outputs.result }}"
+runs:
+  using: "composite"
+  steps:
+    - name: generic step1
+      id: action
+      run: |
+        echo "::group::Title"
+        echo "steps go here"
+        results=something
+        echo "::set-output name=results::$results"
+        echo "::endgroup::"
+      shell: bash
+    - name: Print results
+      id: print
+      run: |
+        echo "${{ steps.action.outputs.result }}"
+      shell: bash
