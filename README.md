@@ -4,10 +4,31 @@
 [![PR AutoLabeler][autolabeler-badge]][autolabeler-url]
 [![Assigner][assigner-badge]][assigner-url]
 
-Description
+Extracts language internationalization & uploads to Lokalise
 
 ### Inputs
-#### `input`
+#### `token`
+Your CLI/API token for Lokalise
+Required.
+
+#### `projectId`
+Your Lokalise project ID
+Required.
+
+#### `filePath`
+The path to the file(s) you want to upload to Lokalise
+Not required.
+Default: `lang`
+
+#### `npmToken`
+Token used for NPM authentication
+Required
+
+#### `nodeVersion`
+What node version to install
+Not required.
+Default: `12`
+
 
 ### Example usage
 ```yaml
