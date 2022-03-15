@@ -1,0 +1,16 @@
+#!/bin/bash
+
+HOMEBREW_NO_AUTO_UPDATE=1 brew tap lokalise/cli-2
+HOMEBREW_NO_AUTO_UPDATE=1 brew install lokalise2
+
+locales=($(ls -1 ${filePath} | sed 's/\.json$//'))
+
+for locale in "${locales[@]}"
+do
+  lokalise2 file upload \
+    --file ${filePath}/${locale}.json \
+    --lang-iso ${locale} \
+    --token ${token} \
+    --project-id ${projectId}
+  sleep 1
+done

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+rm -rf \
+  src/common/report-templates/node_modules \
+  src/common/report-templates/lib \
+  src/common/report-templates/coverage \
+  var/extract-intl
+
+mkdir -p var/extract-intl
+
+yarn run flow-remove-types src/ -d var/extract-intl
+
+yarn run formatjs extract "var/extract-intl/**/*.{js,jsx}" \
+  --out-file ${filePath}/en.json \
+  --format lokalise

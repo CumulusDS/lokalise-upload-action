@@ -1,28 +1,47 @@
-name: 'action-template'
-description: 'description'
+name: "Lokalise File Upload"
+description: "Upload file to lokalise"
 inputs:
-  input:
-    description: 'description'
+  token:
+    description: "Your CLI/API token for Lokalise"
+    required: true
+  projectId:
+    description: "Your project ID for Lokalise"
+    required: true
+  filePath:
+    description: "The path to the file you want to upload to lokalise"
     required: false
-    default: ''
-outputs:
-  result:
-    description: "results"
-    value: "${{ steps.action.outputs.result }}"
+    default: "lang"
+  npmToken:
+    required: true
+    description: "token used for NPM authentication"
+  nodeVersion:
+    required: false
+    description: "what node version to install"
+    default: "12"
+outputs: {}
 runs:
   using: "composite"
   steps:
-    - name: generic step1
-      id: action
-      run: |
-        echo "::group::Title"
-        echo "steps go here"
-        results=something
-        echo "::set-output name=results::$results"
-        echo "::endgroup::"
+    - name: Setup
+      uses: CumulusDS/workflow-setup-action@v1
+      with:
+        nodeVersion: ${{ inputs.nodeVersion }}
+        npmToken: ${{ inputs.npmToken }}
+    - name: Extract
+      run: ${{ github.action_path }}/extract-intl
+      env:
+        filePath: ${{ inputs.filePath }}
       shell: bash
-    - name: Print results
-      id: print
-      run: |
-        echo "${{ steps.action.outputs.result }}"
+    - name: Lokalise upload
+      run: ${{ github.action_path }}/upload
       shell: bash
+      env:
+        token: ${{ inputs.token }}
+        projectId: ${{ inputs.projectId }}
+        filePath: ${{ inputs.filePath }}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.event.repository.name }}-lokalise-${{ github.sha }}-${{ github.run_number }}
+        path: ${{ inputs.filePath }}
+      if: always()
