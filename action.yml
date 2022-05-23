@@ -23,7 +23,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup
-      uses: CumulusDS/workflow-setup-action@v1
+      uses: CumulusDS/workflow-setup-action@v2
       with:
         nodeVersion: ${{ inputs.nodeVersion }}
         npmToken: ${{ inputs.npmToken }}
